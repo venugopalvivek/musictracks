@@ -1,7 +1,7 @@
 package com.swiggy.vivek.rest;
 
 import com.swiggy.vivek.rest.dto.TagDto;
-import com.swiggy.vivek.services.TagService;
+import com.swiggy.vivek.services.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class TagResource {
 
     @Autowired
-    private TagService service;
+    private MusicService service;
 
     @POST
     public Response upsertTag(TagDto tag) {
