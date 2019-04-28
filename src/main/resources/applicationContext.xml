@@ -11,7 +11,7 @@
 
     <context:annotation-config />
 
-<!--    <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="false" />-->
+    <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="false" />
 
     <task:annotation-driven/>
 

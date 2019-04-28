@@ -52,6 +52,9 @@ dependencies {
     // apache commons (StringUtils etc)
     compile 'org.apache.commons:commons-lang3:3.4'
 
+    // mongodb driver
+    compile 'org.mongodb:mongodb-driver:3.10.1'
+
     // javax servlet api
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
@@ -66,4 +69,10 @@ dependencies {
 gretty {
     httpPort = 8080
     contextPath = "musictracks"
+    afterEvaluate {
+        appRunDebug {
+            debugPort = 5005
+            debugSuspend = true
+        }
+    }
 }
