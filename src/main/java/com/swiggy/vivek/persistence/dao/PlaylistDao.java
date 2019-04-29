@@ -13,8 +13,6 @@ import java.util.List;
 @Component
 public class PlaylistDao extends AbstractDao<PlaylistEntity> {
 
-    private static final int PAGE_SIZE = 15;
-
     public PlaylistDao() {
         super("playlists", PlaylistEntity.class);
     }
@@ -33,11 +31,15 @@ public class PlaylistDao extends AbstractDao<PlaylistEntity> {
                 .into(new ArrayList<PlaylistEntity>()).get(0);
     }
 
-    public List<PlaylistEntity> search(List<String> tags, int pageNum) {
+    public long searchCount(List<String> tags) {
+        return collection().countDocuments(Filters.in("tags", tags));
+    }
+
+    public List<PlaylistEntity> search(List<String> tags, int pageSize, int pageNum) {
         return collection().find(Filters.in("tags", tags))
                 .sort(Sorts.orderBy(Sorts.descending("likes", "playCount")))
-                .skip(PAGE_SIZE * (pageNum-1))
-                .limit(PAGE_SIZE)
+                .skip(pageSize * (pageNum-1))
+                .limit(pageSize)
                 .into(new ArrayList<PlaylistEntity>());
     }
 

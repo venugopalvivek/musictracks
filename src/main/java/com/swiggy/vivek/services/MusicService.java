@@ -5,9 +5,11 @@ import com.swiggy.vivek.persistence.dao.PlaylistDao;
 import com.swiggy.vivek.persistence.dao.TagDao;
 import com.swiggy.vivek.persistence.model.PlaylistEntity;
 import com.swiggy.vivek.persistence.model.TagEntity;
-import com.swiggy.vivek.rest.dto.*;
+import com.swiggy.vivek.rest.dto.ExploreDto;
+import com.swiggy.vivek.rest.dto.PlaylistDetailsDto;
+import com.swiggy.vivek.rest.dto.PlaylistDto;
+import com.swiggy.vivek.rest.dto.PlaylistHeaderDto;
 import org.apache.commons.lang3.StringUtils;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class MusicService {
+
+    private static final int PAGE_SIZE = 15;
 
     @Autowired
     private TagDao tagDao;
@@ -73,19 +77,31 @@ public class MusicService {
             throw new MusicTracksException(Response.Status.BAD_REQUEST.getStatusCode(),
                     "Cannot search with empty tags");
         }
-        List<PlaylistEntity> entities = playlistDao.search(tags, pageNum);
-        List<PlaylistHeaderDto> dtos = entities.stream()
-                .map(entity -> toPlaylistHeader(entity))
-                .collect(Collectors.toList());
 
-        List<String> entityTags = entities.stream()
-                .flatMap(entity -> entity.getTags().stream())
-                .distinct()
-                .collect(Collectors.toList());
+        long docCount = playlistDao.searchCount(tags);
 
         ExploreDto dto = new ExploreDto();
-        dto.setPlaylists(dtos);
-        dto.setTags(entityTags);
+        dto.setTotal(docCount);
+
+        if (pageNum * PAGE_SIZE - docCount > PAGE_SIZE) {
+            throw new MusicTracksException(Response.Status.BAD_REQUEST.getStatusCode(),
+                    "Page number is out of bounds");
+        }
+
+        if (docCount > 0) {
+            List<PlaylistEntity> entities = playlistDao.search(tags, PAGE_SIZE, pageNum);
+            List<PlaylistHeaderDto> dtos = entities.stream()
+                    .map(entity -> toPlaylistHeader(entity))
+                    .collect(Collectors.toList());
+
+            List<String> entityTags = entities.stream()
+                    .flatMap(entity -> entity.getTags().stream())
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            dto.setPlaylists(dtos);
+            dto.setTags(entityTags);
+        }
 
         return dto;
     }

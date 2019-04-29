@@ -4,8 +4,17 @@ import java.util.List;
 
 public class ExploreDto {
 
+    private long total;
     private List<PlaylistHeaderDto> playlists;
     private List<String> tags;
+
+    public long getTotal() {
+        return total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
+    }
 
     public List<PlaylistHeaderDto> getPlaylists() {
         return playlists;
