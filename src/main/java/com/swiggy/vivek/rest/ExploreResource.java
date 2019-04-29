@@ -1,5 +1,6 @@
 package com.swiggy.vivek.rest;
 
+import com.swiggy.vivek.exceptions.MusicTracksException;
 import com.swiggy.vivek.rest.dto.ExploreDto;
 import com.swiggy.vivek.rest.dto.PlaylistHeaderDto;
 import com.swiggy.vivek.services.MusicService;
@@ -22,10 +23,20 @@ public class ExploreResource {
     private MusicService service;
 
     @GET
+    @Path("/{tags}")
+    public Response findPlaylists(@PathParam("tags") String encodedTags) throws Throwable {
+        return findPlaylistsInt(encodedTags, 1);
+    }
+
+    @GET
     @Path("/{tags}/{pageNum}")
     public Response findPlaylists(@PathParam("tags") String encodedTags,
-                                                 @DefaultValue("1") @PathParam("pageNum") int pageNum)
+                                  @DefaultValue("1") @PathParam("pageNum") int pageNum)
             throws Throwable {
+        return findPlaylistsInt(encodedTags, pageNum);
+    }
+
+    private Response findPlaylistsInt(String encodedTags, int pageNum) throws Throwable {
         String[] decodedTags = encodedTags.split("\\+");
         List<String> tags = Arrays.asList(decodedTags).stream()
                 .map(value -> value.replaceAll("_", " "))
