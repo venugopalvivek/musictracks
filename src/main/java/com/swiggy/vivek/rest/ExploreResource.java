@@ -6,10 +6,8 @@ import com.swiggy.vivek.services.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Path("/explore")
+@Produces(MediaType.APPLICATION_JSON)
 public class ExploreResource {
 
     @Autowired
