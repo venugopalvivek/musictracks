@@ -2,13 +2,13 @@ package com.swiggy.vivek.persistence.model;
 
 import org.bson.types.ObjectId;
 
-public final class Tag {
+public final class TagEntity {
     private ObjectId id;
     private String tag;
 
-    public Tag() {}
+    public TagEntity() {}
 
-    public Tag(final String tag) {
+    public TagEntity(final String tag) {
         this.tag = tag;
     }
 
@@ -33,12 +33,12 @@ public final class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Tag tag = (Tag) o;
+        TagEntity tagEntity = (TagEntity) o;
 
-        if (getId() != null ? !getId().equals(tag.getId()) : tag.getId() != null) {
+        if (getId() != null ? !getId().equals(tagEntity.getId()) : tagEntity.getId() != null) {
             return false;
         }
-        if (getTag() != null ? !getTag().equals(tag.getTag()) : tag.getTag() != null )
+        if (getTag() != null ? !getTag().equals(tagEntity.getTag()) : tagEntity.getTag() != null )
             return false;
 
         return true;
@@ -53,7 +53,7 @@ public final class Tag {
 
     @Override
     public String toString() {
-        return "Tag{"
+        return "TagEntity{"
                 + "id='" + id + "'"
                 + ", tag='" + tag + "'"
                 + "}";

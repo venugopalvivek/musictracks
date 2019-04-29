@@ -26,8 +26,8 @@ public class TagResource {
     }
 
     @GET
-    public Response findTags(@QueryParam("prefix") String prefix) {
-        List<TagDto> tags = service.findTags(prefix);
+    public Response findTags(@QueryParam("prefix") String prefix) throws Throwable {
+        List<String> tags = service.findTags(prefix);
         return Response.ok(tags).build();
     }
 
